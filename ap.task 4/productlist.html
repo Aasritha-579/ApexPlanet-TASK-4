@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Listing</title>
+  <style>
+    .product { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+    .controls { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Product Listing</h2>
+
+  <div class="controls">
+    <label>Filter by Category:</label>
+    <select id="categoryFilter" onchange="filterProducts()">
+      <option value="All">All</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Books">Books</option>
+    </select>
+
+    <label>Sort by:</label>
+    <select id="sortOption" onchange="sortProducts()">
+      <option value="price">Price</option>
+      <option value="rating">Rating</option>
+    </select>
+  </div>
+
+  <div id="productContainer"></div>
+
+  <script>
+    const products = [
+      { name: "Laptop", category: "Electronics", price: 800, rating: 4.5 },
+      { name: "Book: JavaScript", category: "Books", price: 20, rating: 4.8 },
+      { name: "Headphones", category: "Electronics", price: 150, rating: 4.2 },
+      { name: "Book: CSS Guide", category: "Books", price: 15, rating: 4.6 }
+    ];
+
+    let filtered = [...products];
+
+    function renderProducts(items) {
+      const container = document.getElementById("productContainer");
+      container.innerHTML = "";
+      items.forEach(p => {
+        container.innerHTML += `<div class="product">
+          <h3>${p.name}</h3>
+          <p>Category: ${p.category}</p>
+          <p>Price: $${p.price}</p>
+          <p>Rating: ${p.rating}</p>
+        </div>`;
+      });
+    }
+
+    function filterProducts() {
+      const cat = document.getElementById("categoryFilter").value;
+      filtered = cat === "All" ? [...products] : products.filter(p => p.category === cat);
+      sortProducts();
+    }
+
+    function sortProducts() {
+      const sortKey = document.getElementById("sortOption").value;
+      filtered.sort((a, b) => b[sortKey] - a[sortKey]);
+      renderProducts(filtered);
+    }
+
+    window.onload = () => {
+      renderProducts(products);
+    };
+  </script>
+</body>
+</html>
